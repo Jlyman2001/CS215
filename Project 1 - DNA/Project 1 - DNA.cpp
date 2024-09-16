@@ -14,27 +14,79 @@ in a DNA sequence
 sequence
 **/
 
+/*
+* Tasks:
+*   loop through string
+*   Find first hit of STR after current position
+*   See how many times that sequence of STR repeats
+*   if that amount is higher than the previous longest sequence, update that value
+*       Because of the nature of the problem, we can just keep going through the string because 
+*       reading the same string again will always be shorter than the full repeated STRs
+* 
+* Pseudocode:
+
+*/
+
 int numOccurrences(string& STR, string& sequence)
 {
     //variable for final return value
-    int occurrences = 0;
-
-    //index for previous hit of sequence
-    int indexOfLastSequence = 0;
-
-
-
+    int longestChainOfOccurrences = 0;
 
     //ensure length fits to prevent index out of bounds
     if (STR.length() < sequence.length())
     {
         //loop over entire string
-        while (/*Some Condition*/1)
+        for (int index = 0; index < sequence.length(); index++)
         {
+            //find the next hit for STR
+            int indexOfNextHit = sequence.find(STR);
+
+            //local variable within the loop to count the current number of occurrences 
+            int currentNumOccurrences = 0;
+
+            //boolean flag to escape out of while loop. When the sequence stops being a repeat
+            //of the STR it will become false and break out of the loop
+            bool isRepeating = true;
+
+            //variable to store the number of characters accounted for by the already counted STRs
+            int lengthOfSTRRepeats = 0;
+
+            //see how many times that sequence of STRs repeats
+            while (isRepeating)
+            {
+                //if the length of the STR is longer than what is left in the sequence, it cannot repeat again
+                if (STR.length() < (sequence.length() - lengthOfSTRRepeats))
+                {
+
+                    //generates a substring at the outer loop index, offset by the amount of previously 
+                    //counted characters. This string is the length of the STR so it is robust for
+                    //all lengths of STR
+                    string nextSTRCheck = sequence.substr((index + lengthOfSTRRepeats), STR.length());
+
+                    //if this new string is a repeat of the STR
+                    if (nextSTRCheck == STR)
+                    {
+
+                    }
+
+
+
+                }
+
+                //if STR is longer than is left, the loop has to stop so isRepeating becomes false
+                else
+                {
+                    isRepeating = false;
+                }
+            }
+
+
+
+
 
         }
     }
-    return occurrences;
+    return longestChainOfOccurrences;
 }
 
 int main(int argc, const char* argv[]) {

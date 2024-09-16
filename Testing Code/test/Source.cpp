@@ -1,19 +1,22 @@
 #include <iostream>
-#include <string>
-#include <cctype>
-
-
 using namespace std;
 
+void PrintSelectedNumbers(int numCount) {
+    int i;
+    int number;
+
+    for (i = 0; i < numCount; ++i) {
+        cin >> number;
+        if ((number % 4) == 0) {
+            cout << number << endl;
+        }
+    }
+}
+
 int main() {
-	string userString;
+    int numCount = 5;
 
-	getline(cin, userString);
+    PrintSelectedNumbers(numCount);
 
-	if (tolower(userString.at(0)) == tolower(userString.at(1)))
-		cout << "Valid string" << endl;
-	else
-		cout << "Invalid string" << endl;
-
-	return 0;
+    return 0;
 }
