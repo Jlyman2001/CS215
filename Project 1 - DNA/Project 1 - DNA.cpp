@@ -1,5 +1,10 @@
 /*
 * Project 1 - DNA.cpp : This file contains the 'main' function. Program execution begins and ends there.
+* 
+* Version 2.0:
+*   Initial commit for complete submission for checkpoint B.
+*   Still needs to have debug code removed and comments added/fixed
+* 
 * Version 1.1:
 *   Updated code after first working run to improve comments and code readability.
 * Version 1.0:
@@ -12,10 +17,213 @@
 * */
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
+#include <sstream>
 using namespace std;
 
+int numOccurrences(string& STR, string sequence);
+void readData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<vector<int>>& STRcounts);
+vector<int> getSTRcounts(string& sequence, vector<string>& nameSTRs);
+bool compareSTRcounts(vector<int>& countQuery, vector<int>& countDB);
+
+
+
+/**
+ * Reads from standard input a list of Short Tandem Repeat (STRs)
+ * and their known counts for several individuals
+ *
+ * @param  nameSTRs         the STRs (eg. AGAT, AATG, TATC)
+ * @param  nameIndividuals  the names of individuals (eg. Alice, Bob, Charlie)
+ * @param  STRcounts        the count of the longest consecutive occurrences of each STR in the DNA sequence for each individual
+ * @pre    nameSTRs, nameIndividuals, and nameSTRs are empty
+ * @post   nameSTRs, nameIndividuals and STRcounts are populated with data read from stdin
+
+ **/
+void readData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<vector<int>>& STRcounts)
+{
+
+    //cout << "Inside readData." << endl;
+
+//hard code test input
+    //stringstream cin2("3 AGAT AATG TATC\nAlice 5 2 8\nBob 3 7 4\nCharlie 6 1 5\n");
+ 
+
+    //variable for the amount of STRs
+    int numSTRs;
+    cin >> numSTRs;
+
+    //cout << "Read numSTRs." << endl;
+
+    //iterate through first line of input, reading STRs
+    for (int index = 0; index < numSTRs; index++)
+    {
+        //intermediate string for processing
+        string temp;
+
+        //read value into temporary string
+        cin >> temp;
+
+        //add the read STR value to the vector
+        nameSTRs.push_back(temp);
+    }
+
+    //string to hold the data for each individual person
+    string individualData;
+
+    //stringstream variable to manipulate data easier
+    istringstream individualDataStream;
+
+    //clear \n character
+    cin.ignore(1);
+    
+    //read first line of input
+    getline(cin, individualData);
+    //cout << individualData << endl;
+    
+
+    string readName;
+
+    //as long as the string is not empty, indicating the end of data entry, loop
+    while (individualData != "")
+    {
+        //convert line into stream for easier use
+        individualDataStream.str(individualData);
+
+  
+
+        //read name until whitespace intermediate variable
+        individualDataStream >> readName;
+        //cout << "Name Read " << readName << endl;
+
+        //push this name to the vector of names
+        nameIndividuals.push_back(readName);
+
+        //create an integer vector to append to STRcounts
+        vector<int> personalSTRcounts(numSTRs);
+
+        //the number of values to read is the number of STRs entered;
+        //iterate that many times
+        for (int index = 0; index < numSTRs; index++)
+        {
+            int temp;
+            //read integer input to vector
+            individualDataStream >> temp;
+            personalSTRcounts.at(index) = temp;
+        }
+
+        //push 
+        STRcounts.push_back(personalSTRcounts);
+
+
+
+        //read next line of input
+        getline(cin, individualData);
+        //cout << individualData << endl;
+
+        //clear stringstream for reuse
+        individualDataStream.clear();
+
+    }
+
+    //cout << "Vector nameIndividuals has size: " << nameIndividuals.size() << endl;
+
+
+
+
+    //cout << "End readData." << endl << endl;
+}
+
+/**
+ * Prints a list of Short Tandem Repeat (STRs) and their
+ * known counts for several individuals
+ *
+ * @param   nameSTRs         the STRs (eg. AGAT, AATG, TATC)
+ * @param   nameIndividuals  the names of individuals (eg. Alice, Bob, Charlie)
+ * @param   STRcounts        the STR counts
+ * @pre   nameSTRs, nameIndividuals, and STRcounts hold the data intended to be printed
+ * @post the name of individuals and their STR counts in a column-major format are printed to stdout
+ **/
+void printData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<vector<int>>& STRcounts)
+{
+    //cout << "In printData." << endl;
+    //cout << "Vector nameIndividuals has size: " << nameIndividuals.size() << endl;
+    //formatting command for print statements
+    cout << setw(10) << left;
+
+    cout << "name";
+
+    for (int index = 0; index < nameIndividuals.size(); index++)
+    {
+        cout << setw(10) << nameIndividuals.at(index);
+    }
+    
+    cout << endl << "----------------------------------------" << endl;
+
+    for (int STRnum = 0; STRnum < nameSTRs.size(); STRnum++)
+    {
+        cout << setw(10) << nameSTRs.at(STRnum);
+
+        for (int nameNum = 0; nameNum < nameIndividuals.size(); nameNum++)
+        {
+            cout << setw(10) << (STRcounts.at(nameNum)).at(STRnum);
+        }
+        cout << endl;
+    }
+
+
+
+
+    //reset formatting flag
+    cout << setw(0);
+    cout << endl;
+    return;
+}
+
+/**
+ * Computes the longest consecutive occurrences of several STRs in a DNA sequence
+ *
+ * @param   sequence   a DNA sequence of an individual
+ * @param   nameSTRs   the STRs (eg. AGAT, AATG, TATC)
+ * @returns the count of the longest consecutive occurrences of each STR in nameSTRs
+
+ **/
+vector<int> getSTRcounts(string& sequence, vector<string>& nameSTRs)
+{
+    //vector to store number of matches
+    vector<int> matches;
+
+    //python style for loop
+    for (string STR : nameSTRs)
+    {
+        matches.push_back(numOccurrences(STR, sequence));
+    }
+
+    return matches;
+}
+
+/**
+ * Compares if two vectors of STR counts are identical or not
+ *
+ * @param   countQuery   STR counts that is being queried (such as that computed from an input DNA sequence)
+ * @param   countDB   STR counts that are known for an individual (such as that stored in a database)
+ * @returns  a boolean indicating whether they are the same or not
+
+ **/
+bool compareSTRcounts(vector<int>& countQuery, vector<int>& countDB)
+{
+    bool areEqual = true;
+    if (countQuery.size() == countDB.size())
+    {
+        for (int index = 0; index < countQuery.size(); index++)
+        {
+            if (countQuery.at(index) != countDB.at(index))
+                areEqual = false;
+        }
+    }
+    return areEqual;
+}
 
 /**
 * function to find the longest consecutive sequence of Short Tandem Repeats (STR)
@@ -176,47 +384,53 @@ int numOccurrences(string& STR, string& sequence)
 }
 */
 
+int main(int argc, const char* argv[]) 
+{
 
-int main(int argc, const char* argv[]) {
-    // ****** STOP: DO NOT CHANGE THIS FUNCTION FOR THIS CHECKPOINT *******
-    string sequence, STR; //strings storing the DNA sequence and the Short Tandem Repeats(STR)
-        //Read sequence and STR from standard input
-    
-    //hard code for testing
-    //sequence = "AGACGGGTTACCATGACTATCTATCTATCTATCTATCTATCTATCTATCACGTACGTACGTATCGAGATAGATAGATAGATAGATCCTCGACTTCGATCGCAATGAATGCCAATAGACAAAA";
-    //STR = "AGAT";
+
+    string sequence; //variable storing the query DNA sequence
+    //sequence = "AACCCTGCGCGCGCGCGATCTATCTATCTATCTATCCAGCATTAGCTAGCATCAAGATAGATAGATGAATTTCGAAATGAATGAATGAATGAATGAATGAATG";
     cin >> sequence;
-    cin >> STR;
 
-    //Determine the length of the longest consecutive sequence of STR in the DNA sequence
-    int num = numOccurrences(STR, sequence);
-    
-    //Print out the length
-    cout << num << endl;
-    //cout << sequence << endl;
+    vector<string> nameSTRs; //variable storing the names of the STRs 
+    vector<string> nameIndividuals; //variable storing the names of the Individuals 
+    vector<vector<int>> STRcountsDB; //variable storing all the known STR counts
+
+    //read this data from the standard input and store in corresponding variables
+    readData(nameSTRs, nameIndividuals, STRcountsDB);
+
+    //print the same data in a more aesthetically pleasing manner! 
+    printData(nameSTRs, nameIndividuals, STRcountsDB);
+
+    //FIXME - add code below as per the instructions provided above
+
+    //vector for storing amounts of each str
+    vector<int> testSTRs;
+    testSTRs = getSTRcounts(sequence, nameSTRs);
+
+    cout << "Counts of the STRs in the DNA sequence is: ";
+    for (int index = 0; index < testSTRs.size(); index++)
+    {
+        cout << testSTRs.at(index) << " ";
+    }
+
+    cout << endl;
+
+    bool matchFound = false;
+    //iterate through all people
+    for (int nameIndex = 0; nameIndex < nameIndividuals.size(); nameIndex++)
+    {
+        if (compareSTRcounts(testSTRs, STRcountsDB.at(nameIndex)))
+        {
+            cout << "Found Match: " << nameIndividuals.at(nameIndex) << endl;
+            matchFound = true;
+        }
+    }
+
+    if (!matchFound)
+    {
+        cout << "No Match Found!" << endl;
+    }
+
 
 }
-
-
-/*
-TODO: 
-    File Operations:
-        Read CSV file into program
-        Parse imported CSV for relevant data
-    String Manipulation:
-        Count longest set of repeating sequences
-            Find first occurence of first sequence, iterate through string until it stops finding matches. Count number
-            Remove string up until that point
-                or
-            Find next occurence after index of first one + the length of the sequence
-            Iterate through until the string is done
-    Compare string match counts against values stored from the file
-
-
-*/
-
-
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
