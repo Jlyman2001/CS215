@@ -1,1 +1,2 @@
 C:\Users\Josh\Documents\GitHub\CS215\Project 1 - DNA\x64\Debug\Project 1 - DNA.exe
+E:\github\CS215\Project 1 - DNA\x64\Debug\Project 1 - DNA.exe
