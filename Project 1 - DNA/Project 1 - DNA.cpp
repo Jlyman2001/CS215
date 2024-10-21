@@ -1,6 +1,10 @@
 /*
 * Project 1 - DNA.cpp : This file contains the 'main' function. Program execution begins and ends there.
 * 
+* Version 2.1:
+*   Added more comments for checkpoint B.
+*   Handled edge case in compareSTRcounts function that was never tested for
+*   Removed vestigal code and comments
 * Version 2.0:
 *   Initial commit for complete submission for checkpoint B.
 *   Still needs to have debug code removed and comments added/fixed
@@ -23,6 +27,7 @@
 #include <sstream>
 using namespace std;
 
+//Function Declarations so they can be defined in any order
 int numOccurrences(string& STR, string sequence);
 void readData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<vector<int>>& STRcounts);
 vector<int> getSTRcounts(string& sequence, vector<string>& nameSTRs);
@@ -44,17 +49,12 @@ bool compareSTRcounts(vector<int>& countQuery, vector<int>& countDB);
 void readData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<vector<int>>& STRcounts)
 {
 
-    //cout << "Inside readData." << endl;
-
-//hard code test input
-    //stringstream cin2("3 AGAT AATG TATC\nAlice 5 2 8\nBob 3 7 4\nCharlie 6 1 5\n");
- 
 
     //variable for the amount of STRs
     int numSTRs;
     cin >> numSTRs;
 
-    //cout << "Read numSTRs." << endl;
+
 
     //iterate through first line of input, reading STRs
     for (int index = 0; index < numSTRs; index++)
@@ -80,7 +80,6 @@ void readData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<
     
     //read first line of input
     getline(cin, individualData);
-    //cout << individualData << endl;
     
 
     string readName;
@@ -95,7 +94,6 @@ void readData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<
 
         //read name until whitespace intermediate variable
         individualDataStream >> readName;
-        //cout << "Name Read " << readName << endl;
 
         //push this name to the vector of names
         nameIndividuals.push_back(readName);
@@ -113,26 +111,19 @@ void readData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<
             personalSTRcounts.at(index) = temp;
         }
 
-        //push 
+        //push the created vector to the output
         STRcounts.push_back(personalSTRcounts);
 
 
 
         //read next line of input
         getline(cin, individualData);
-        //cout << individualData << endl;
+
 
         //clear stringstream for reuse
         individualDataStream.clear();
 
     }
-
-    //cout << "Vector nameIndividuals has size: " << nameIndividuals.size() << endl;
-
-
-
-
-    //cout << "End readData." << endl << endl;
 }
 
 /**
@@ -147,36 +138,43 @@ void readData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<
  **/
 void printData(vector<string>& nameSTRs, vector<string>& nameIndividuals, vector<vector<int>>& STRcounts)
 {
-    //cout << "In printData." << endl;
-    //cout << "Vector nameIndividuals has size: " << nameIndividuals.size() << endl;
+
     //formatting command for print statements
     cout << setw(10) << left;
 
+    //Print the top corner of name table
     cout << "name";
 
+    //iterate through the list of names and print them
     for (int index = 0; index < nameIndividuals.size(); index++)
     {
         cout << setw(10) << nameIndividuals.at(index);
     }
     
+    //print line to separate the table
     cout << endl << "----------------------------------------" << endl;
 
+
+    //iterate through each STR count
     for (int STRnum = 0; STRnum < nameSTRs.size(); STRnum++)
     {
+        //print the name of the STR
         cout << setw(10) << nameSTRs.at(STRnum);
 
+        //iterate through each person in the list
         for (int nameNum = 0; nameNum < nameIndividuals.size(); nameNum++)
         {
+            //print that person's count for the current STR
             cout << setw(10) << (STRcounts.at(nameNum)).at(STRnum);
         }
+        //print a new line to spkit table into different lines
         cout << endl;
     }
 
-
-
-
     //reset formatting flag
     cout << setw(0);
+
+    //print end line for spacing
     cout << endl;
     return;
 }
@@ -197,6 +195,7 @@ vector<int> getSTRcounts(string& sequence, vector<string>& nameSTRs)
     //python style for loop
     for (string STR : nameSTRs)
     {
+        //add the number of occurrences to the return vector
         matches.push_back(numOccurrences(STR, sequence));
     }
 
@@ -213,15 +212,27 @@ vector<int> getSTRcounts(string& sequence, vector<string>& nameSTRs)
  **/
 bool compareSTRcounts(vector<int>& countQuery, vector<int>& countDB)
 {
+    //flag to store equality value
     bool areEqual = true;
+
+    //make sure they're the same size to prevnt index out of bounds
     if (countQuery.size() == countDB.size())
     {
+        //iterate through the entire vector
         for (int index = 0; index < countQuery.size(); index++)
         {
+            //if the two values are not equal at any given point, they 
+            //aren't identical
             if (countQuery.at(index) != countDB.at(index))
                 areEqual = false;
         }
     }
+    else
+    {
+        //if they are different sizes, they are not equal
+        areEqual = false;
+    }
+
     return areEqual;
 }
 
@@ -389,7 +400,11 @@ int main(int argc, const char* argv[])
 
 
     string sequence; //variable storing the query DNA sequence
+
+    //hard code input alternative for faster testing
     //sequence = "AACCCTGCGCGCGCGCGATCTATCTATCTATCTATCCAGCATTAGCTAGCATCAAGATAGATAGATGAATTTCGAAATGAATGAATGAATGAATGAATGAATG";
+
+    //read the input sequence
     cin >> sequence;
 
     vector<string> nameSTRs; //variable storing the names of the STRs 
@@ -416,17 +431,22 @@ int main(int argc, const char* argv[])
 
     cout << endl;
 
+    //flag variable to store if a match is found
     bool matchFound = false;
+
     //iterate through all people
     for (int nameIndex = 0; nameIndex < nameIndividuals.size(); nameIndex++)
     {
+        //for each person check if they match the given STR counts
         if (compareSTRcounts(testSTRs, STRcountsDB.at(nameIndex)))
         {
+            //if they match, print a message saying as much
             cout << "Found Match: " << nameIndividuals.at(nameIndex) << endl;
             matchFound = true;
         }
     }
 
+    //if no match was found, print a message saying as much
     if (!matchFound)
     {
         cout << "No Match Found!" << endl;
