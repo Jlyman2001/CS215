@@ -1,0 +1,4 @@
+﻿  dynamicarray.cpp
+E:\github\CS215\Lab 06 - Dynamic Arrays\dynamicarray.cpp(39,41): warning C4244: 'initializing': conversion from 'double' to 'size_t', possible loss of data
+E:\github\CS215\Lab 06 - Dynamic Arrays\dynamicarray.cpp(42,14): warning C4244: '*=': conversion from 'double' to 'int', possible loss of data
+  Lab 06 - Dynamic Arrays.vcxproj -> E:\github\CS215\Lab 06 - Dynamic Arrays\x64\Debug\Lab 06 - Dynamic Arrays.exe
