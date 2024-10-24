@@ -1,0 +1,4 @@
+Why did the duck cross the road?   V: 7   C: 18  D: 0   S: 7   
+To prove he wasn't chicken!        V: 7   C: 14  D: 0   S: 6   
+Why did the cow cross the road?    V: 7   C: 17  D: 0   S: 7   
+To get to the udder side!          V: 8   C: 11  D: 0   S: 6   
