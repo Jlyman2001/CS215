@@ -1,3 +1,0 @@
-C:/Users/Josh/Documents/GitHub/CS215/lab06/out/build/x64-Debug/CMakeFiles/lab06.dir
-C:/Users/Josh/Documents/GitHub/CS215/lab06/out/build/x64-Debug/CMakeFiles/edit_cache.dir
-C:/Users/Josh/Documents/GitHub/CS215/lab06/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
