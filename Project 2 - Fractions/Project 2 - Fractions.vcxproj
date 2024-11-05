@@ -130,9 +130,11 @@
   <ItemGroup>
     <ClCompile Include="fraction.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Recipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="fraction.h" />
+    <ClInclude Include="Recipe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

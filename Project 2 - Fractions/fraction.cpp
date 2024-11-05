@@ -18,6 +18,7 @@ Fraction::Fraction(int num, int den)
 	simplify();
 }
 
+
 Fraction Fraction::operator+(Fraction& right)
 {
 	int commonDenominator = this->getDenominator() * right.getDenominator();
@@ -42,9 +43,21 @@ Fraction Fraction::operator*(Fraction& right)
 	return returnVal.simplify();
 }
 
+Fraction Fraction::operator*(int right)
+{
+	Fraction returnVal(this->getNumerator() * right, this->getDenominator());
+	return returnVal.simplify();
+}
+
 Fraction Fraction::operator/(Fraction& right)
 {
 	Fraction returnVal(this->getNumerator() * right.getDenominator(), this->getDenominator() * right.getNumerator());
+	return returnVal.simplify();
+}
+
+Fraction Fraction::operator/(int right)
+{
+	Fraction returnVal(this->getNumerator(), this->getDenominator() * right);
 	return returnVal.simplify();
 }
 

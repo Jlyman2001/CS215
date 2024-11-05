@@ -1,3 +1,5 @@
 ﻿D:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (Project 2 - Fractions.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  fraction.cpp
+  Recipe.cpp
+E:\github\CS215\Project 2 - Fractions\Recipe.cpp(50,40): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+E:\github\CS215\Project 2 - Fractions\Recipe.cpp(101,30): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
   Project 2 - Fractions.vcxproj -> E:\github\CS215\Project 2 - Fractions\x64\Debug\Project 2 - Fractions.exe
